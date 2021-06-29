@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, ActivityIndicator } from "react-native";
 import {
   ModalContainer,
   Container,
@@ -16,18 +16,33 @@ import {
 import { saveTask } from "../../utils/storeTask";
 
 export default function ModalTask({ onClose, data }) {
-  const [inputTextTitle, setInputTextTitle] = useState("");
-  const [inputTextDescription, setInputTextDescription] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const [inputText, setInputText] = useState({title:"", description:""});
+  
+  const CheckData = () => {
+    if(Array.isArray(data) == true) {
+      return <TaskTitle>Faça uma Anotação</TaskTitle>;
+    } else {
+      return <TaskTitle>Sua Anotação</TaskTitle>;
+    }
+  }
   // Saving a task to local storage
   const handleSaveTask = async () => {
+    setLoading(true);
     let randomId = () => {
-      return Math.floor(Math.random() * (255 - 1)) + 1;
+      return Math.floor(Math.random() * (255 - 1)) + 1
     };
-    let result = {titulo: inputTextTitle, description: inputTextDescription, id: randomId()};
-    await saveTask("mytask", result);
-    
-    onClose();
+
+    try {
+      let result = {title: inputText.title, description: inputText.description, id: randomId()};
+      await saveTask("mytask", result);
+      setLoading(false);
+
+      onClose();
+    } catch(error) {
+      console.log(error);
+      alert("Ops! parece que algo deu errao!");
+    }    
   }
 
   return (
@@ -35,31 +50,36 @@ export default function ModalTask({ onClose, data }) {
       <Container>
         <Header>
           <TouchableOpacity onPress={onClose}>
-            <Feather name="x" color="#000" size={30} />
+            <Feather name="x" color="#333" size={30} />
           </TouchableOpacity>
         </Header>
 
         <TaskContainer>
-          {
-            !data
-            ? <TaskTitle>Sua Anotação</TaskTitle> 
-            : <TaskTitle>Faça uma Anotação</TaskTitle>          
-          }
+          <CheckData />
+          
           <InputTask
             placeholder="Titulo..."
             placeholderTextColor="#333"
-            value={ !data ? inputTextTitle : data.titulo }
-            onChangeText={(text) => setInputTextTitle(text)}
+            value={!data ? inputText.title : data.title}
+            onChangeText={(text) => setInputText((prevState) => {              
+              return {...prevState, title: text}
+            })}
           />
           <InputTaskDescription
             placeholder="Descrição..."
             placeholderTextColor="#333"
-            value={ !data ? inputTextDescription : data.titulo}
-            onChangeText={(text) => setInputTextDescription(text)}
+            value={!data ? inputText.description : data.description}
+            onChangeText={(text) => setInputText((prevState) => {
+              return {...prevState, description: text}
+            })}
           />
 
-          <ButtonTask onPress={ handleSaveTask }>
-            <ButtonTaskText>Salvar</ButtonTaskText>
+          <ButtonTask onPress={handleSaveTask}>
+            {
+              loading
+              ? <ActivityIndicator color="#fff" size={24}/>
+              : <ButtonTaskText>Salvar</ButtonTaskText>
+            }            
           </ButtonTask>
         </TaskContainer>
 
