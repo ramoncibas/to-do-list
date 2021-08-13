@@ -6,7 +6,7 @@ export const ModalContainer = styled.View`
 
 export const Container = styled.View`  
   flex: 1;
-  background-color: #fff;
+  background-color: #12141D;
 `;
 
 export const Header = styled.View`
@@ -25,30 +25,30 @@ export const TaskTitle = styled.Text`
   font-size: 26px;
   font-weight: bold;
   margin: 20px 0;
+  color: #fff;
 `;
 
 export const InputTask = styled.TextInput`
   width: 100%;
   height: 50px;
 
-  background-color: #fff;
-  padding: 0 10px;
+  background-color: #1E2029;
+  padding: 0px 10px;
 
-  border: 1px solid #c5c5c5;
-  border-radius: 10px;
+  border: 1px solid #2A2C34;
+  border-radius: 5px;
 `;
 
 export const InputTaskDescription = styled.TextInput`
   width: 100%;
   height: 50%;
 
-  background-color: #fff;
-  
+  background-color: #1E2029;
   margin-top: 10px;
   padding: 0 10px;
 
-  border: 1px solid #c5c5c5;
-  border-radius: 10px;
+  border: 1px solid #2A2C34;
+  border-radius: 5px;
 `;
 
 export const ButtonTask = styled.TouchableOpacity`
@@ -61,9 +61,9 @@ export const ButtonTask = styled.TouchableOpacity`
   padding: 10px;
   margin-top: 10px;
 
-  background-color: #2d2a50;
+  background-color: #FF934F;
 
-  border: 1px solid #c5c5c5;
+  border: 1px solid #666;
   border-radius: 10px;
 `;
 

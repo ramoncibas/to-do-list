@@ -50,7 +50,7 @@ export default function ModalTask({ onClose, data }) {
       <Container>
         <Header>
           <TouchableOpacity onPress={onClose}>
-            <Feather name="x" color="#333" size={30} />
+            <Feather name="x" color="#FF934F" size={30} />
           </TouchableOpacity>
         </Header>
 
@@ -59,7 +59,7 @@ export default function ModalTask({ onClose, data }) {
           
           <InputTask
             placeholder="Titulo..."
-            placeholderTextColor="#333"
+            placeholderTextColor="#fff"
             value={!data ? inputText.title : data.title}
             onChangeText={(text) => setInputText((prevState) => {              
               return {...prevState, title: text}
@@ -67,7 +67,7 @@ export default function ModalTask({ onClose, data }) {
           />
           <InputTaskDescription
             placeholder="Descrição..."
-            placeholderTextColor="#333"
+            placeholderTextColor="#fff"
             value={!data ? inputText.description : data.description}
             onChangeText={(text) => setInputText((prevState) => {
               return {...prevState, description: text}
