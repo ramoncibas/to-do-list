@@ -75,7 +75,7 @@ export default function TaskList() {
       />
 
       <ButtonTask onPress={() => setModalVisible(true)}>
-        <Feather name="plus" color="#000" size={24}/>
+        <Feather name="plus" color="#fff" size={24}/>
       </ButtonTask>
 
       <Modal visible={modalVisible} transparent animationType="slide">

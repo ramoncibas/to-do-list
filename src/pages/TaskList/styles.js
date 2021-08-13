@@ -30,7 +30,7 @@ export const ButtonTask = styled.TouchableOpacity`
   border: 1px solid #333;
   border-radius: 50px;
 
-  background-color: #FFF;
+  background-color: #FF934F;
   justify-content: center;
   align-items: center;
   

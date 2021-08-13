@@ -29,6 +29,6 @@ export const ActionContainer = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
 
-  background-color: #ff5555;
+  background-color: #FF934F;
   border-radius: 7px;
 `;
