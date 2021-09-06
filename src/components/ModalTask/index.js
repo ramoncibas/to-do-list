@@ -13,62 +13,66 @@ import {
   ButtonTaskText
 } from "./styles";
 
-import { saveTask } from "../../utils/storeTask";
+import { saveTask, updateTask } from "../../utils/storeTask";
 
 export default function ModalTask({ onClose, data }) {
   const [loading, setLoading] = useState(false);
-  const [inputText, setInputText] = useState({title:"", description:""});
-  
-  const CheckData = () => {
-    if(Array.isArray(data) == true) {
-      return <TaskTitle>Faça uma Anotação</TaskTitle>;
-    } else {
-      return <TaskTitle>Sua Anotação</TaskTitle>;
-    }
+  const [inputText, setInputText] = useState({ title:"", description:""});
+
+  // Title modal component
+  const TitleModal = () => {
+    return (
+      <TaskTitle>{ data.title ? "Sua Anotação" : "Faça uma Anotação" }</TaskTitle>
+    );
   }
+
   // Saving a task to local storage
   const handleSaveTask = async () => {
     setLoading(true);
     let randomId = () => {
-      return Math.floor(Math.random() * (255 - 1)) + 1
+      return Math.floor(Math.random() * (255 - 1)) + 1;
     };
 
     try {
-      let result = {title: inputText.title, description: inputText.description, id: randomId()};
+      let result = { 
+        title: inputText.title, 
+        description: inputText.description, 
+        id: data.id || randomId() 
+      };
       await saveTask("mytask", result);
       setLoading(false);
-
       onClose();
+
     } catch(error) {
       console.log(error);
-      alert("Ops! parece que algo deu errao!");
-    }    
+      alert("Ops! parece que algo deu errado!");
+    }
   }
 
   return (
     <ModalContainer>
       <Container>
         <Header>
-          <TouchableOpacity onPress={onClose}>
+          <TouchableOpacity onPress={ onClose }>
             <Feather name="x" color="#FF934F" size={30} />
           </TouchableOpacity>
         </Header>
 
         <TaskContainer>
-          <CheckData />
+          <TitleModal/>
           
           <InputTask
             placeholder="Titulo..."
             placeholderTextColor="#fff"
-            value={!data ? inputText.title : data.title}
-            onChangeText={(text) => setInputText((prevState) => {              
+            value={data.title ? data.title : inputText.title}
+            onChangeText={(text) => setInputText((prevState) => {
               return {...prevState, title: text}
             })}
           />
           <InputTaskDescription
             placeholder="Descrição..."
             placeholderTextColor="#fff"
-            value={!data ? inputText.description : data.description}
+            value={data.title ? data.description : inputText.description}
             onChangeText={(text) => setInputText((prevState) => {
               return {...prevState, description: text}
             })}
@@ -79,7 +83,7 @@ export default function ModalTask({ onClose, data }) {
               loading
               ? <ActivityIndicator color="#fff" size={24}/>
               : <ButtonTaskText>Salvar</ButtonTaskText>
-            }            
+            }
           </ButtonTask>
         </TaskContainer>
 
