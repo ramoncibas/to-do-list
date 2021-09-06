@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, ActivityIndicator} from "react-native";
+import { Modal, ActivityIndicator } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
 import Tasks from "../../components/Tasks";
@@ -21,6 +21,7 @@ export default function TaskList() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalData, setModalData] = useState({});
   
   // Getting the tasks saved in local storage
   useEffect(() => {
@@ -31,25 +32,25 @@ export default function TaskList() {
     }
 
     getTask();
-  })  
+  });
 
   // Passing data of the selected item
   const handleItem = (item) => {
-    setData(item);
+    setModalData(item);
     setModalVisible(true);
     console.log(item);
   }
   
   // Delete Task from local storage
-  const handleDelete = async (id) => {
+  const handleDelete = async (id) => {        
     const result = await deleteTask(data, id);
-    setData(result);    
-  }  
+    setData(result);
+  }
 
   return (
     <TaskListContainer>
       <Header>
-        <Title>Lista de Tarefas</Title>        
+        <Title>Lista de Anotações</Title>        
       </Header>
       {
         loading && (
@@ -62,7 +63,7 @@ export default function TaskList() {
       {
         !loading && data == "" && (
           <ContainerEmpty>
-            <TitleWarning>Você ainda não tem anda!</TitleWarning>
+            <TitleWarning>Você ainda não tem anotações!</TitleWarning>
           </ContainerEmpty>
         )
       }
@@ -74,12 +75,15 @@ export default function TaskList() {
         showsVerticalScrollIndicator={false}
       />
 
-      <ButtonTask onPress={() => setModalVisible(true)}>
+      <ButtonTask onPress={() => {
+        setModalData({});
+        setModalVisible(true)
+        }}>
         <Feather name="plus" color="#fff" size={24}/>
       </ButtonTask>
 
       <Modal visible={modalVisible} transparent animationType="slide">
-        <ModalTask onClose={() => setModalVisible(false)} data={data} />
+        <ModalTask onClose={() => setModalVisible(false)} data={modalData} />
       </Modal>
     </TaskListContainer>
   );
