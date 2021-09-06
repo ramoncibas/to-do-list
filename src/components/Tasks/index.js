@@ -1,7 +1,7 @@
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import { Text } from "react-native";
+import { Alert } from "react-native";
 import {
   ContainerTask,
   TextTask,
@@ -10,9 +10,35 @@ import {
 } from "./styles";
 
 export default function Tasks({ data, selectedItem, deleteItem }) {
+  // Asking the user if he even wants to delete the task
+  const handleAlert = () => {
+    Alert.alert(
+      "Deseja mesmo excluir?",
+      `Anotação "${data.title}"`,
+      [
+        {
+          text: "Cancel",
+          onPress: () => {
+            console.log("Calcel Pressed")
+            return;
+          },
+          style: "cancel"
+        },
+        {
+          text: "Excluir", 
+          onPress: () => {
+            console.log("Excluir Pressed")
+            return deleteItem(data.id);
+          }
+        }
+      ]
+    )
+  }
+
+  // Swipe button to delete task
   const RightActions = () => {
     return (
-      <ActionContainer onPress={() => deleteItem(data.id)}>
+      <ActionContainer onPress={() => handleAlert()}>
         <Feather name="trash" color="#fff" size={24}/>
       </ActionContainer>
     );
